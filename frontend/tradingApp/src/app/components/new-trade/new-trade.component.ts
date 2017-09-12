@@ -40,7 +40,7 @@ export class NewTradeComponent implements OnInit {
     if (this.trade.sell_currency && this.trade.buy_currency && (this.trade.buy_currency != this.trade.sell_currency)){
       this._tradeService
           .getRate(this.trade.sell_currency.toString(), this.trade.buy_currency.toString())
-          .subscribe(data => this.trade.rate = parseFloat(data.toFixed(4)))
+          .subscribe(data => this.trade.rate = data['rate'])
     }
   }
 
