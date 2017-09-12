@@ -1,6 +1,6 @@
 <h1>New Trade</h1>
 <hr>
-<form (ngSubmit)="onSubmit(trade)" #tradeForm="ngForm">
+<form (ngSubmit)="onSubmit()" #tradeForm="ngForm">
   <div class="row">
     <div class="col-4">
       <div class="form-group">
@@ -24,8 +24,8 @@
     </div>
     <div class="col-4">
     <p class="text-center">Rate</p>
-    <p class="text-center"
-    > <strong class="arrow-spacing">></strong> {{ trade.rate }} <strong class="arrow-spacing">></strong> 
+    <p class="text-center">
+       <strong class="arrow-spacing">></strong> {{ trade.rate }} <strong class="arrow-spacing">></strong> 
     </p>
               
     </div> 

@@ -20,12 +20,6 @@ export class TradesComponent implements OnInit {
     this._tradeService
         .getAll()
         .subscribe(data => this.trades=data);
-    
-
-  }
-
-  showNewTrade(){
-    this.router.navigate(['/new-trade'])
   }
 
 }

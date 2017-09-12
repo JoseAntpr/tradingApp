@@ -3,10 +3,15 @@ from django.utils.crypto import get_random_string
 
 
 def create_id():
-        return "PR" + get_random_string(length=7)
+    """ Return a id
+    
+    Method for create a custom id
+    """
+    return "PR" + get_random_string(length=7)
 
 
 class TypeMoney(models.Model):
+    """ TypeMoney Model"""
     name = models.CharField(max_length=3, primary_key=True)
 
     def __str__(self):
@@ -14,6 +19,7 @@ class TypeMoney(models.Model):
 
 
 class Trade(models.Model):
+    """ Trade model """
     my_id = models.CharField(
         max_length=9, primary_key=True, editable=False, default=create_id)
     sell_currency = models.ForeignKey(
@@ -27,5 +33,8 @@ class Trade(models.Model):
     
     def __str__(self):
         return str(self.sell_currency) + "-->" + str(self.buy_currency)
+
+    class Meta:
+        ordering = ['-date_booked']
 
     

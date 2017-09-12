@@ -18,6 +18,7 @@ export class NewTradeComponent implements OnInit {
   rate:number;
   submitted = false;
   trade:Trade = {};
+  none =undefined;
 
 
   constructor(
@@ -49,14 +50,14 @@ export class NewTradeComponent implements OnInit {
     }
   }
 
-  onSubmit(form: FormGroup):void{ 
+  onSubmit():void{ 
     let trade: Trade;
-    trade = Object.assign({}, this.trade, form.value) as Trade;
-    console.log(trade);
+    trade = Object.assign({}, this.trade) as Trade;
+
     this._tradeService
         .createTrade(trade)
-        .subscribe(data => console.log(data));
-    this._router.navigate(['/'])
+        .subscribe();
+      this._router.navigate(['/'])
 
   }
 
