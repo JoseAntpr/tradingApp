@@ -28,7 +28,7 @@ class Trade(models.Model):
     buy_currency = models.ForeignKey(
         TypeMoney, related_name="buy_currency", on_delete=models.CASCADE)
     buy_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    rate = models.DecimalField(max_digits=10, decimal_places=4)
+    rate = models.DecimalField(max_digits=10, decimal_places=5)
     date_booked = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):

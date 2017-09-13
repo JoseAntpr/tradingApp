@@ -1,6 +1,5 @@
 import requests
-import json
-
+from decimal import *
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import list_route
@@ -23,20 +22,19 @@ class TradeViewSet(ModelViewSet):
     queryset = Trade.objects.all()
     serializer_class = TradeSerializer
     
-    def create(self, request):
-        """ 
-        Create a user
-        :param request: HttpRequest
-        :return Response
-        """
-        serializer = TradeSerializer(data=request.data)
+    def perform_create(self, serializer):
        
-        if serializer.is_valid():
-            trade = serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, 
-                            status=status.HTTP_400_BAD_REQUEST)
+        sell_currency = serializer.validated_data['sell_currency']
+        buy_currency = serializer.validated_data['buy_currency']
+        serializer.validated_data['rate'] = self.rateRequest(
+                                                            sell_currency.name, 
+                                                            buy_currency.name)
+        sell_amount = serializer.validated_data['sell_amount']
+        serializer.validated_data[
+            'buy_amount'] = sell_amount * Decimal(serializer.validated_data[
+                                                                    'rate'])
+        serializer.save()
+            
 
     @list_route(methods=['get'])
     def getRate(self, request, pk=None):
@@ -55,16 +53,20 @@ class TradeViewSet(ModelViewSet):
         sell_currency = currencies_serialiser.validated_data['sell_currency']
         buy_currency = currencies_serialiser.validated_data['buy_currency']
 
+        return Response({
+            'rate': self.rateRequest(sell_currency, buy_currency)
+        })
+
+    def rateRequest(self, sell_currency, buy_currency):
         currencies = {'base': sell_currency, 'symbols': buy_currency}
         rate_request = requests.get("http://api.fixer.io/latest", 
                                     currencies)
 
         rate_serializer = RateSerializer(data=rate_request.json())
         rate_serializer.is_valid(raise_exception=True)
-            
-        return Response({'rate': rate_serializer.validated_data['rates']
-                        [buy_currency]})
-
+        
+        return rate_serializer.validated_data['rates'][buy_currency]
+        
 
 class TypeMoneyViewSet(ModelViewSet):
     """ TypeMoney Viewset with set of HTTP Methods
