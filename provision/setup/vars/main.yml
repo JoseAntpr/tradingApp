@@ -1,0 +1,4 @@
+db_name: tradinapp
+db_user: ebury
+db_password: ebury
+ansible_python_interpreter: /usr/bin/python3

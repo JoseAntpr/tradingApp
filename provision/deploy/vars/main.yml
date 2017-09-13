@@ -1,0 +1,26 @@
+# Name for the project path
+project_name: django_tradinApp
+
+# The base path to install to. 
+project_path: /var/www/tradingApp
+
+# the git repository URL for the project
+git_repo: https://github.com/JoseAntpr/tradingApp
+
+# Venv path
+virtualenv_path: venv
+
+requirements_file: /var/www/tradingApp/django_tradinApp/backend/requirements.txt
+
+static_root: /var/www/tradingApp/django_tradinApp/backend
+
+# frontend path
+front_path: /var/www/tradingApp/django_tradinApp/frontend/tradingApp/dist/.
+
+# Backend path
+backend_path: /var/www/tradingApp/django_tradinApp/backend
+
+# Nginx frontend url
+
+nginx_default_path: /var/www/html
+

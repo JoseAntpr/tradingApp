@@ -1,0 +1,53 @@
+- name: Setup the Git repo
+  git: repo={{ git_repo }}
+       dest={{ project_path }}/{{ project_name }}
+  notify:
+  - restart gunicorn
+
+- name: Move frontend to nginx Server
+  command: cp -rf {{ front_path }} {{ nginx_default_path }}
+
+- name: Setup Virtualenv and install packages required
+  pip: 
+    virtualenv: /var/www/tradingApp/venv
+    requirements: /var/www/tradingApp/django_tradinApp/backend/requirements.txt
+  notify:
+  - restart gunicorn
+  
+- name: Install packages required by the django app inside virtualenv
+  pip: virtualenv=/venv requirements= {{ requirements_file }}
+  notify:
+  - restart gunicorn
+
+- name: copy nginx front config
+  template: src=../templates/nginx_fron.j2 dest=/etc/nginx/sites-enabled/frontApp.conf
+  notify:
+  - restart nginx
+
+- name: copy nginx config
+  template: src=../templates/nginx.j2 dest=/etc/nginx/sites-enabled/tradingApp.conf
+  notify:
+  - restart nginx
+
+- name: django settings_production
+  template: src=../templates/settings_production.py dest=/var/www/tradingApp/{{ project_name }}/backend/tradingApp
+
+- name: django migrate
+  django_manage: command=migrate app_path={{ backend_path }} settings=tradingApp.settings_production virtualenv=/var/www/tradingApp/venv
+
+- name: django collectstatic
+  django_manage: command=collectstatic app_path={{ backend_path }} settings=tradingApp.settings_production virtualenv=/var/www/tradingApp/venv
+
+- name: Create the circus config requirements_file
+  template: src=../templates/circus.ini dest=/etc/circus/conf.d/django_tradinApp.ini
+  notify:
+  - restart circus
+
+- name: ensure circus is running
+  systemd: name=circusd state=started enabled=yes
+
+- name: make sure nginx server is running
+  service: name=nginx state=started enabled=yes
+
+- name: make sure gunicorn server is running
+  service: name=gunicorn state=started enabled=yes

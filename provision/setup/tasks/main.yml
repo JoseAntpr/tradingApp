@@ -1,0 +1,36 @@
+- name: Install system packages & Services
+  sudo: yes
+  apt: pkg={{ item }} state=installed update_cache=yes
+  with_items:
+    #Database
+    - postgresql
+    - libpq-dev
+    - python3-psycopg2
+    - build-essential
+
+    # Python dev
+    - python3-setuptools
+    - python-virtualenv
+    - python3-pip
+
+    - git
+    - nginx
+    - gunicorn
+    - circus
+
+- name: make sure postgresql server is running
+  service: name=postgresql state=started
+
+- name: create database
+  become_user: postgres
+  postgresql_db: 
+    name: tradinapp
+
+  
+- name: Create Database user
+  become_user: postgres
+  postgresql_user: db=tradinapp name=ebury password=ebury priv=ALL
+
+- name: remove default nginx site
+  file: path=/etc/nginx/sites-enabled/default state=absent
+
