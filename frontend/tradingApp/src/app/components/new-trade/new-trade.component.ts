@@ -56,8 +56,8 @@ export class NewTradeComponent implements OnInit {
 
     this._tradeService
         .createTrade(trade)
-        .subscribe();
-      this._router.navigate(['/'])
+        .subscribe(x => this._router.navigate(['/']));
+      
 
   }
 
