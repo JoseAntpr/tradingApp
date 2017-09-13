@@ -16,8 +16,9 @@ ADMINS = ((
 DATABASES = {
    'default': {
        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-       'NAME': 'tradinApp',
-       'USER': 'django',
-       'PASSWORD': 'PReburyAdmin'
+       'HOST': 'localhost',
+       'NAME': 'tradinapp',
+       'USER': 'ebury',
+       'PASSWORD': 'ebury'
    }
 }
