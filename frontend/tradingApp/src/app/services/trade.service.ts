@@ -3,8 +3,10 @@ import {Http, Response, RequestOptions, Headers} from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/add/operator/map";
 
-import { BackendUri } from './settings';
+
 import { Trade } from '../class/trade'
+
+import { environment } from '../../environments/environment'
 
 @Injectable()
 export class TradeService {
@@ -12,19 +14,18 @@ export class TradeService {
   
 
   constructor(
-    private _http: Http,
-    @Inject(BackendUri) private _backendUri
+    private _http: Http
   ) { }
 
   getAll():Observable<Trade[]> {
     return this._http
-      .get(`${this._backendUri}/trades`)
+      .get(`${environment.urlBackend}/trades`)
       .map(res => res.json())
   }
 
   getRate(sellCurrency:string, buyCurrency: string ): Observable<number>{
     return this._http
-               .get(`${this._backendUri}/trades/getRate?sell_currency=${sellCurrency}&buy_currency=${buyCurrency}`)
+               .get(`${environment.urlBackend}/trades/getRate?sell_currency=${sellCurrency}&buy_currency=${buyCurrency}`)
                .map(res => res.json())
   }
 
@@ -39,7 +40,7 @@ export class TradeService {
    
 
     return this._http
-               .post(`${this._backendUri}/trades/`,trade)
+               .post(`${environment.urlBackend}/trades/`,trade)
                .map(response => response.json() as Trade)
   }
 
