@@ -10,7 +10,7 @@ class TypeMoney(models.Model):
         return self.name
 
 
-def create_id(self):
+def create_id():
         """ Return a id
     
         Method for create a custom id

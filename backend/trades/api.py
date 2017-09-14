@@ -26,7 +26,7 @@ class TradeViewSet(ModelViewSet):
        
         sell_currency = serializer.validated_data['sell_currency']
         buy_currency = serializer.validated_data['buy_currency']
-        serializer.validated_data['rate'] = self.rateRequest(
+        serializer.validated_data['rate'] = self.getRequest(
                                                             sell_currency.name, 
                                                             buy_currency.name)
         sell_amount = serializer.validated_data['sell_amount']
@@ -54,10 +54,10 @@ class TradeViewSet(ModelViewSet):
         buy_currency = currencies_serialiser.validated_data['buy_currency']
 
         return Response({
-            'rate': self.rateRequest(sell_currency, buy_currency)
+            'rate': self.getRequest(sell_currency, buy_currency)
         })
 
-    def rateRequest(self, sell_currency, buy_currency):
+    def getRequest(self, sell_currency, buy_currency):
         currencies = {'base': sell_currency, 'symbols': buy_currency}
         rate_request = requests.get("http://api.fixer.io/latest", 
                                     currencies)
