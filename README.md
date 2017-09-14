@@ -5,6 +5,7 @@
 ### Requirements 
 - Ansible
 - Vagrant
+- Virtual Box
 
 For Ansible you can install with pip.
 ```
@@ -12,6 +13,7 @@ pip install ansible
 ```
 
 You cand download Vagrant [here](https://www.vagrantup.com/downloads.html)
+You cand download VirtualBox [here](https://www.virtualbox.org/wiki/Downloads)
 
 ### Quick start
 
